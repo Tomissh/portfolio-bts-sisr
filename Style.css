@@ -1,0 +1,124 @@
+body {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+header {
+  background: linear-gradient(135deg, #667eea 0%, #d48236 100%);
+}
+
+footer {
+  background: linear-gradient(135deg, #667eea 0%, #d48236 100%);
+}
+
+.card {
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+#PhT {
+  max-width: 150px;
+  width: 50%;
+  height: auto;
+  display: block;
+}
+
+.competences-scroll {
+  width: 100%;
+  overflow: hidden;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px 0;
+}
+
+.competences-container {
+  display: flex;
+  gap: 15px;
+  padding: 0 15px;
+  animation: scroll 30s linear infinite;
+  width: fit-content;
+}
+
+.competence-card {
+  min-width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #667eea 0%, #d48236 100%);
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.competence-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-50% - 7.5px));
+  }
+}
+
+.competences-container:hover {
+  animation-play-state: paused;
+}
+
+#email {
+  width: 250px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.form_group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.form_group label {
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  color: #333;
+}
+
+
+.form_group input {
+  border: 2px solid #ccc;
+  border-radius: 100rem;
+  color: #2518dc;
+  font-size: 1.2rem;
+  outline: none;
+  padding: 0.7rem 1.5rem;
+  min-width: 220px
+}
+
+.form_group input:focus {
+  border-color: #2518dc;
+}
+
+.form_group input:invalid:not(:focus):not(:placeholder-shown) {
+  background: white;
+  border-color: #c84504;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='%23c84504'%3E%3Cpath d='M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 40px;
+}
