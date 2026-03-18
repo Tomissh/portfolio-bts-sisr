@@ -1,24 +1,17 @@
-# .github/workflows/veille.yml
-# ─────────────────────────────────────────────────────────────
-# Envoie automatiquement le rapport de veille technologique
-# le 1er de chaque mois à 8h00 (heure de Paris ≈ UTC+1/+2).
-# Un bouton "Run workflow" permet de tester manuellement.
-# ─────────────────────────────────────────────────────────────
-
-name: 📡 Veille Souveraineté Numérique
+name: Veille Souverainete Numerique
 
 on:
-  # ── Déclenchement automatique : 1er du mois à 7h00 UTC (= 8h00 Paris hiver, 9h00 été)
   schedule:
     - cron: "0 7 1 * *"
-
-  # ── Déclenchement manuel depuis l'onglet Actions de GitHub
   workflow_dispatch:
     inputs:
       reason:
-        description: "Raison du déclenchement manuel (facultatif)"
+        description: "Raison du declenchement manuel (facultatif)"
         required: false
         default: "Test manuel"
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   send-veille:
@@ -26,49 +19,47 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Récupérer le code du dépôt
-      - name: ⬇️ Checkout du dépôt
+      - name: Checkout du depot
         uses: actions/checkout@v4
 
-      # 2. Configurer Python 3.11
-      - name: 🐍 Configurer Python 3.11
+      - name: Configurer Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      # 3. Mettre en cache les dépendances pour accélérer les runs suivants
-      - name: 📦 Mettre en cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-anthropic
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      # 4. Installer la seule dépendance nécessaire
-      - name: ⚙️ Installer les dépendances Python
+      - name: Installer les dependances Python
         run: pip install anthropic
 
-      # 5. Exécuter le script avec les secrets injectés en variables d'env
-      - name: 🚀 Exécuter send_veille.py
+      - name: Verifier les secrets
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then echo "ERREUR : ANTHROPIC_API_KEY manquant" && exit 1; fi
+          if [ -z "$EMAIL_FROM" ];        then echo "ERREUR : EMAIL_FROM manquant"        && exit 1; fi
+          if [ -z "$EMAIL_TO" ];          then echo "ERREUR : EMAIL_TO manquant"          && exit 1; fi
+          if [ -z "$EMAIL_PASSWORD" ];    then echo "ERREUR : EMAIL_PASSWORD manquant"    && exit 1; fi
+          echo "Tous les secrets sont presents."
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           EMAIL_FROM:        ${{ secrets.EMAIL_FROM }}
           EMAIL_TO:          ${{ secrets.EMAIL_TO }}
           EMAIL_PASSWORD:    ${{ secrets.EMAIL_PASSWORD }}
-        run: python send_veille.py
 
-      # 6. Afficher un résumé dans l'interface GitHub Actions
-      - name: ✅ Résumé
+      - name: Executer send_veille_websearch.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          EMAIL_FROM:        ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO:          ${{ secrets.EMAIL_TO }}
+          EMAIL_PASSWORD:    ${{ secrets.EMAIL_PASSWORD }}
+        run: python send_veille_websearch.py
+
+      - name: Resume succes
         if: success()
         run: |
-          echo "## ✅ Rapport envoyé avec succès" >> $GITHUB_STEP_SUMMARY
-          echo "**Date :** $(date '+%d/%m/%Y %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
-          echo "**Destinataire :** ${{ secrets.EMAIL_TO }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Modèle :** claude-haiku-4-5-20251001" >> $GITHUB_STEP_SUMMARY
+          echo "## Rapport envoye avec succes" >> $GITHUB_STEP_SUMMARY
+          echo "Date : $(date '+%d/%m/%Y %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "Destinataire : ${{ secrets.EMAIL_TO }}" >> $GITHUB_STEP_SUMMARY
 
-      - name: ❌ Résumé en cas d'erreur
+      - name: Resume echec
         if: failure()
         run: |
-          echo "## ❌ Échec de l'envoi du rapport" >> $GITHUB_STEP_SUMMARY
-          echo "Vérifiez les secrets GitHub et les logs ci-dessus." >> $GITHUB_STEP_SUMMARY
+          echo "## Echec de l'envoi du rapport" >> $GITHUB_STEP_SUMMARY
+          echo "Verifiez les secrets GitHub et les logs ci-dessus." >> $GITHUB_STEP_SUMMARY
