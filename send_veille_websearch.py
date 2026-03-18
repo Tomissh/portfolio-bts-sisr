@@ -53,12 +53,8 @@ ALLOWED_DOMAINS = [
     "numerique.gouv.fr",
     "silicon.fr",
     "lemondeinformatique.fr",
-    "zdnet.fr",
     "usine-digitale.fr",
-    "lemonde.fr",
-    "01net.com",
     "nextinpact.com",
-    "lefigaro.fr",
 ]
 
 
