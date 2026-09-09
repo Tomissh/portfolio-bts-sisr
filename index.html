@@ -75,6 +75,38 @@
     }
 
     /* ══════════════════════════════════════════════════════════
+       ALTERNANCE
+    ══════════════════════════════════════════════════════════ */
+    .alternance-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.25rem; }
+    .alternance-intro  { color: #666; font-size: 0.92rem; margin-bottom: 1.5rem; }
+
+    .company-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .company-logo {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #d48236 100%);
+      color: #fff; font-weight: 700; font-size: 1.3rem;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 0.9rem; flex-shrink: 0;
+    }
+    .company-meta { list-style: none; padding: 0; margin: 0.75rem 0 0; text-align: left; width: 100%; }
+    .company-meta li {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.85rem; color: #555; padding: 5px 0;
+      border-top: 1px solid #f0f0f0;
+    }
+    .company-meta li:first-child { border-top: none; }
+
+    .mission-list { list-style: none; padding: 0; margin: 0; }
+    .mission-list li {
+      position: relative; padding: 4px 0 4px 1.6rem;
+      font-size: 0.85rem; color: #555; line-height: 1.5;
+    }
+    .mission-list li::before {
+      content: "✓"; position: absolute; left: 0; top: 4px;
+      color: #667eea; font-weight: 700;
+    }
+
+    /* ══════════════════════════════════════════════════════════
        VEILLE — EN-TÊTE & FILTRES
     ══════════════════════════════════════════════════════════ */
     #veille { margin-bottom: 3rem; }
@@ -324,11 +356,12 @@
   <header class="text-white text-center py-4">
     <h1>Tom Omnès</h1>
     <nav class="mt-3">
-      <a href="#propos"   class="btn btn-outline-light mx-2">À propos</a>
-      <a href="#parcours" class="btn btn-outline-light mx-2">Parcours</a>
-      <a href="#projets"  class="btn btn-outline-light mx-2">Projets</a>
-      <a href="#veille"   class="btn btn-outline-light mx-2">Veille</a>
-      <a href="#contact"  class="btn btn-outline-light mx-2">Contact</a>
+      <a href="#propos"     class="btn btn-outline-light mx-2">À propos</a>
+      <a href="#parcours"   class="btn btn-outline-light mx-2">Parcours</a>
+      <a href="#alternance" class="btn btn-outline-light mx-2">Alternance</a>
+      <a href="#projets"    class="btn btn-outline-light mx-2">Projets</a>
+      <a href="#veille"     class="btn btn-outline-light mx-2">Veille</a>
+      <a href="#contact"    class="btn btn-outline-light mx-2">Contact</a>
     </nav>
   </header>
 
@@ -336,8 +369,11 @@
 
     <!-- ── À PROPOS ─────────────────────────────────────────── -->
     <div id="propos" class="row mb-5 align-items-start">
-      <div class="col-md-6 d-flex justify-content-center">
+      <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
         <img id="PhT" src="images/PhotoTom.jpg" alt="Photo de profil" class="img-fluid rounded">
+        <a href="documents/E5-Tableau-de-synthese.pdf" target="_blank" rel="noopener" class="btn btn-outline-primary mt-3">
+          📄 Voir le tableau de synthèse E5
+        </a>
       </div>
       <div class="col-md-6 d-flex flex-column align-items-center justify-content-start">
         <h2 class="text-center">À propos de moi</h2>
@@ -392,6 +428,46 @@
           <div class="card h-100"><div class="card-body">
             <h5 class="card-title">Actuellement<br>BTS SIO</h5>
             <p class="card-text">Option Solutions d'Infrastructures, Systèmes et Réseaux en Apprentissage</p>
+          </div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ALTERNANCE ────────────────────────────────────────── -->
+    <div id="alternance" class="mb-5">
+      <div class="alternance-header">
+        <h2 class="mb-0">Mon alternance</h2>
+        <span class="month-badge">Depuis le 1er août 2025</span>
+      </div>
+      <p class="alternance-intro">Présentation de l'entreprise qui m'accueille en apprentissage et des missions qui m'y sont confiées.</p>
+
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="card h-100"><div class="card-body company-card">
+            <div class="company-logo">iS</div>
+            <h5 class="card-title mb-0">iSi Solutions</h5>
+            <p class="card-text mb-0">Infogérance &amp; services informatiques</p>
+            <ul class="company-meta">
+              <li>📍 Annecy</li>
+              <li>📅 Depuis le 1er août 2025</li>
+              <li>🎓 Alternance BTS SIO SISR</li>
+            </ul>
+          </div></div>
+        </div>
+        <div class="col-md-8 mb-4">
+          <div class="card h-100"><div class="card-body">
+            <h5 class="card-title">Présentation</h5>
+            <p class="card-text">
+              iSi Solutions est une entreprise d'infogérance qui accompagne les entreprises dans la gestion
+              de leur parc informatique : maintenance, support utilisateurs, administration des serveurs et
+              des réseaux, et mise en place de solutions adaptées à leurs besoins.
+            </p>
+            <h5 class="card-title mt-4">Mes missions</h5>
+            <ul class="mission-list">
+              <li>Mission à compléter</li>
+              <li>Mission à compléter</li>
+              <li>Mission à compléter</li>
+            </ul>
           </div></div>
         </div>
       </div>
