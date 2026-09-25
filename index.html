@@ -75,6 +75,66 @@
     }
 
     /* ══════════════════════════════════════════════════════════
+       PARCOURS — frise verticale
+    ══════════════════════════════════════════════════════════ */
+    .timeline {
+      position: relative; list-style: none;
+      max-width: 860px; margin: 1.5rem auto 0; padding: 0;
+    }
+    /* Ligne centrale en dégradé */
+    .timeline::before {
+      content: ""; position: absolute;
+      top: 0; bottom: 0; left: 50%; width: 3px;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, #667eea, #d48236);
+      border-radius: 3px;
+    }
+    .timeline-item {
+      position: relative; width: 50%;
+      padding: 0 2.5rem 2rem 0;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+    /* Une étape sur deux à droite de la ligne */
+    .timeline-item:nth-child(even) {
+      margin-left: 50%; padding: 0 0 2rem 2.5rem;
+    }
+    .timeline-dot {
+      position: absolute; top: 14px; right: -22px; z-index: 1;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: #fff; border: 3px solid #667eea;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 8px rgba(102,126,234,0.25);
+    }
+    .timeline-item:nth-child(even) .timeline-dot { right: auto; left: -22px; }
+    .timeline-item.is-current .timeline-dot {
+      background: linear-gradient(135deg, #667eea, #d48236);
+      border-color: #fff;
+      box-shadow: 0 0 0 5px rgba(212,130,54,0.25);
+    }
+    .timeline-card { text-align: right; }
+    .timeline-item:nth-child(even) .timeline-card { text-align: left; }
+    .timeline-date {
+      display: inline-block; font-size: 0.72rem; font-weight: 700;
+      background: linear-gradient(135deg, #667eea, #d48236);
+      color: #fff; padding: 2px 10px; border-radius: 100px;
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 767px) {
+      .timeline::before { left: 22px; }
+      .timeline-item,
+      .timeline-item:nth-child(even) {
+        width: 100%; margin-left: 0;
+        padding: 0 0 1.5rem 64px;
+      }
+      .timeline-dot,
+      .timeline-item:nth-child(even) .timeline-dot { left: 0; right: auto; }
+      .timeline-card,
+      .timeline-item:nth-child(even) .timeline-card { text-align: left; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
        ALTERNANCE
     ══════════════════════════════════════════════════════════ */
     .alternance-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.25rem; }
@@ -325,6 +385,21 @@
 
     .modal-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1.25rem; }
 
+    /* ══════════════════════════════════════════════════════════
+       PROJETS — cartes cliquables & contenu de la modale
+    ══════════════════════════════════════════════════════════ */
+    .projet-card { cursor: pointer; }
+    .projet-card:focus-visible { outline: 3px solid #667eea; outline-offset: 3px; }
+    .projet-card .veille-hint { margin: 0.75rem 0 0; }
+    .projet-detail { display: none; }
+
+    .modal-box h4 {
+      font-size: 0.9rem; font-weight: 700; color: #667eea;
+      margin: 1.25rem 0 0.5rem;
+    }
+    .modal-box .projet-body p { font-size: 0.88rem; color: #444; line-height: 1.7; }
+    .modal-box .projet-body .mission-list li { font-size: 0.88rem; color: #444; }
+
     @media (max-width: 600px) {
       .veille-card { width: calc(100vw - 120px); }
       .veille-filters { gap: 6px; }
@@ -350,6 +425,16 @@
       <p class="modal-detail" id="mDetail"></p>
       <a class="modal-link" id="mLink" href="#" target="_blank" rel="noopener">Lire l'article source</a>
       <div class="modal-tags" id="mTags"></div>
+    </div>
+  </div>
+
+  <!-- Modale des projets — remplie à partir du .projet-detail de la carte cliquée -->
+  <div class="modal-overlay" id="projetModal" role="dialog" aria-modal="true" aria-labelledby="pTitle">
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Fermer">✕</button>
+      <h3 id="pTitle"></h3>
+      <div class="projet-body" id="pBody"></div>
+      <div class="modal-tags" id="pTags"></div>
     </div>
   </div>
 
@@ -405,32 +490,40 @@
     <!-- ── PARCOURS ──────────────────────────────────────────── -->
     <div id="parcours" class="mb-5">
       <h2>Mon parcours</h2>
-      <div class="row">
-        <div class="col-md-3 mb-3">
-          <div class="card h-100"><div class="card-body">
-            <h5 class="card-title">2017 - 2020<br>Bac STMG</h5>
-            <p class="card-text">Option Systèmes d'Informations aux Organisations</p>
+      <ol class="timeline">
+        <li class="timeline-item">
+          <span class="timeline-dot">🎓</span>
+          <div class="card timeline-card"><div class="card-body">
+            <span class="timeline-date">2017 – 2020</span>
+            <h5 class="card-title">Bac STMG</h5>
+            <p class="card-text mb-0">Option Systèmes d'Informations aux Organisations</p>
           </div></div>
-        </div>
-        <div class="col-md-3 mb-3">
-          <div class="card h-100"><div class="card-body">
-            <h5 class="card-title">2020 - 2022<br>Sport de haut niveau</h5>
-            <p class="card-text">Centre de formation de Handball</p>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-dot">🤾</span>
+          <div class="card timeline-card"><div class="card-body">
+            <span class="timeline-date">2020 – 2022</span>
+            <h5 class="card-title">Sport de haut niveau</h5>
+            <p class="card-text mb-0">Centre de formation de Handball</p>
           </div></div>
-        </div>
-        <div class="col-md-3 mb-3">
-          <div class="card h-100"><div class="card-body">
-            <h5 class="card-title">2022 - 2025<br>Assistant d'éducation</h5>
-            <p class="card-text">Collège La Salle, Annecy-le-Vieux</p>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-dot">🏫</span>
+          <div class="card timeline-card"><div class="card-body">
+            <span class="timeline-date">2022 – 2025</span>
+            <h5 class="card-title">Assistant d'éducation</h5>
+            <p class="card-text mb-0">Collège La Salle, Annecy-le-Vieux</p>
           </div></div>
-        </div>
-        <div class="col-md-3 mb-3">
-          <div class="card h-100"><div class="card-body">
-            <h5 class="card-title">Actuellement<br>BTS SIO</h5>
-            <p class="card-text">Option Solutions d'Infrastructures, Systèmes et Réseaux en Apprentissage</p>
+        </li>
+        <li class="timeline-item is-current">
+          <span class="timeline-dot">💻</span>
+          <div class="card timeline-card"><div class="card-body">
+            <span class="timeline-date">Actuellement</span>
+            <h5 class="card-title">BTS SIO</h5>
+            <p class="card-text mb-0">Option Solutions d'Infrastructures, Systèmes et Réseaux en Apprentissage</p>
           </div></div>
-        </div>
-      </div>
+        </li>
+      </ol>
     </div>
 
     <!-- ── ALTERNANCE ────────────────────────────────────────── -->
@@ -478,21 +571,75 @@
       <h2>Mes projets</h2>
       <div class="row">
         <div class="col-md-4 mb-4">
-          <div class="card h-100"><div class="card-body">
+          <div class="card h-100 projet-card" tabindex="0" role="button" aria-haspopup="dialog"><div class="card-body d-flex flex-column">
             <h5 class="card-title">Configuration VPN</h5>
             <p class="card-text">Installation et configuration d'un VPN avec OpenVPN.</p>
+            <div class="veille-tags">
+              <span class="tag" data-theme="Infra">Réseau</span>
+              <span class="tag" data-theme="Cyber">Sécurité</span>
+            </div>
+            <span class="veille-hint">Cliquer pour voir le détail</span>
+            <div class="projet-detail">
+              <h4>Contexte</h4>
+              <p>Permettre à des utilisateurs nomades d'accéder de manière sécurisée aux ressources du réseau interne de l'entreprise depuis l'extérieur.</p>
+              <h4>Réalisation</h4>
+              <ul class="mission-list">
+                <li>Installation du serveur OpenVPN et génération de l'autorité de certification (PKI)</li>
+                <li>Création des certificats serveur et clients</li>
+                <li>Configuration du tunnel, du routage et des règles de pare-feu</li>
+                <li>Déploiement du client et tests de connexion depuis l'extérieur</li>
+              </ul>
+              <h4>Compétences mobilisées</h4>
+              <p>Chiffrement et certificats, routage, sécurisation des accès distants.</p>
+            </div>
           </div></div>
         </div>
         <div class="col-md-4 mb-4">
-          <div class="card h-100"><div class="card-body">
+          <div class="card h-100 projet-card" tabindex="0" role="button" aria-haspopup="dialog"><div class="card-body d-flex flex-column">
             <h5 class="card-title">Accès Serveur</h5>
             <p class="card-text">Configuration d'un utilisateur et mise en place d'un accès à un serveur avec RDS.</p>
+            <div class="veille-tags">
+              <span class="tag" data-theme="Identité">Active Directory</span>
+              <span class="tag" data-theme="Infra">Windows Server</span>
+            </div>
+            <span class="veille-hint">Cliquer pour voir le détail</span>
+            <div class="projet-detail">
+              <h4>Contexte</h4>
+              <p>Donner à un nouvel utilisateur un accès à distance à ses applications métier hébergées sur un serveur Windows via les services Bureau à distance (RDS).</p>
+              <h4>Réalisation</h4>
+              <ul class="mission-list">
+                <li>Création du compte utilisateur dans l'Active Directory</li>
+                <li>Ajout aux groupes de sécurité adaptés (dont les utilisateurs du Bureau à distance)</li>
+                <li>Attribution des droits sur les ressources et partages nécessaires</li>
+                <li>Test de la connexion RDS et accompagnement de l'utilisateur</li>
+              </ul>
+              <h4>Compétences mobilisées</h4>
+              <p>Administration Active Directory, gestion des droits, services RDS.</p>
+            </div>
           </div></div>
         </div>
         <div class="col-md-4 mb-4">
-          <div class="card h-100"><div class="card-body">
+          <div class="card h-100 projet-card" tabindex="0" role="button" aria-haspopup="dialog"><div class="card-body d-flex flex-column">
             <h5 class="card-title">Utilisateur Scan</h5>
             <p class="card-text">Configuration d'un profil utilisateur de dossier de scan pour un copieur.</p>
+            <div class="veille-tags">
+              <span class="tag" data-theme="Identité">Active Directory</span>
+              <span class="tag" data-theme="Infra">Partage réseau</span>
+            </div>
+            <span class="veille-hint">Cliquer pour voir le détail</span>
+            <div class="projet-detail">
+              <h4>Contexte</h4>
+              <p>Permettre au copieur multifonction d'envoyer les documents numérisés directement dans un dossier réseau de l'utilisateur (scan vers dossier SMB).</p>
+              <h4>Réalisation</h4>
+              <ul class="mission-list">
+                <li>Création d'un compte de service dédié au copieur</li>
+                <li>Création du dossier de scan et configuration du partage et des permissions NTFS</li>
+                <li>Paramétrage du profil de destination dans l'interface du copieur</li>
+                <li>Test de numérisation et vérification de la réception des fichiers</li>
+              </ul>
+              <h4>Compétences mobilisées</h4>
+              <p>Partages réseau SMB, permissions NTFS, configuration de périphériques.</p>
+            </div>
           </div></div>
         </div>
       </div>
@@ -777,6 +924,20 @@
   <script>
   (function () {
 
+    /* ── BLOCAGE DU DÉFILEMENT ───────────────────────────────── */
+    // Masquer la barre de défilement élargit la page : on compense sa
+    // largeur pour que l'arrière-plan ne se décale pas.
+    function lockScroll() {
+      const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.paddingRight = scrollbar + 'px';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function unlockScroll() {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    }
+
     /* ── MODALE ──────────────────────────────────────────────── */
     const overlay   = document.getElementById('veilleModal');
     const mSource   = document.getElementById('mSource');
@@ -800,12 +961,13 @@
       mTags.innerHTML = card.querySelector('.veille-tags').innerHTML;
 
       overlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
+      lockScroll();
     }
 
     function closeModal() {
+      if (!overlay.classList.contains('open')) return;
       overlay.classList.remove('open');
-      document.body.style.overflow = '';
+      unlockScroll();
     }
 
     // Clic sur une carte → ouvre la modale
@@ -820,7 +982,46 @@
       if (e.target === overlay) closeModal();
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Escape') { closeModal(); closeProjet(); }
+    });
+
+    /* ── MODALE PROJETS ──────────────────────────────────────── */
+    const pOverlay = document.getElementById('projetModal');
+    const pTitle   = document.getElementById('pTitle');
+    const pBody    = document.getElementById('pBody');
+    const pTags    = document.getElementById('pTags');
+    let lastProjet = null;
+
+    function openProjet(card) {
+      lastProjet = card;
+      pTitle.textContent = card.querySelector('.card-title').textContent;
+      pBody.innerHTML    = card.querySelector('.projet-detail').innerHTML;
+      pTags.innerHTML    = card.querySelector('.veille-tags').innerHTML;
+      pOverlay.classList.add('open');
+      lockScroll();
+      pOverlay.querySelector('.modal-close').focus();
+    }
+
+    function closeProjet() {
+      if (!pOverlay.classList.contains('open')) return;
+      pOverlay.classList.remove('open');
+      unlockScroll();
+      if (lastProjet) lastProjet.focus();
+    }
+
+    const projets = document.getElementById('projets');
+    projets.addEventListener('click', function (e) {
+      const card = e.target.closest('.projet-card');
+      if (card) openProjet(card);
+    });
+    projets.addEventListener('keydown', function (e) {
+      const card = e.target.closest('.projet-card');
+      if (card && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openProjet(card); }
+    });
+
+    pOverlay.querySelector('.modal-close').addEventListener('click', closeProjet);
+    pOverlay.addEventListener('click', function (e) {
+      if (e.target === pOverlay) closeProjet();
     });
 
     /* ── CARROUSEL ───────────────────────────────────────────── */
