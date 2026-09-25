@@ -5,73 +5,232 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Portfolio Tom Omnès</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="Style.css">
   <style>
 
     /* ══════════════════════════════════════════════════════════
-       HEADER / FOOTER
+       BASE — couleurs & typographie
     ══════════════════════════════════════════════════════════ */
-    header {
-      background: linear-gradient(135deg, #667eea 0%, #d48236 100%) !important;
+    :root {
+      --ink: #1d2130;          /* texte principal */
+      --muted: #646a7d;        /* texte secondaire */
+      --line: #e6e8f0;         /* bordures */
+      --bg: #f6f7fb;           /* fond de page */
+      --primary: #5a67d8;      /* couleur principale */
+      --primary-soft: #eef0fd;
+      --accent: #d48236;       /* accent, à utiliser avec parcimonie */
+      --accent-ink: #a95e1c;
+      --accent-soft: #fbf0e6;
     }
-    footer {
-      background: linear-gradient(135deg, #667eea 0%, #d48236 100%) !important;
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body {
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: var(--bg); color: var(--ink);
+      -webkit-font-smoothing: antialiased;
     }
-    header .btn-outline-light {
-      border-color: rgba(255,255,255,0.75) !important;
-      color: #fff !important;
+    main h2 { font-weight: 700; letter-spacing: -0.02em; }
+    /* Petit trait d'accent sous les titres de section */
+    main h2::after {
+      content: ""; display: block;
+      width: 36px; height: 3px; margin-top: 0.5rem;
+      background: var(--accent); border-radius: 3px;
     }
-    header .btn-outline-light:hover {
-      background-color: rgba(255,255,255,0.2) !important;
-      border-color: #fff !important;
+    main h2.text-center::after { margin-inline: auto; }
+    .alternance-header h2::after { display: none; }
+
+    /* ══════════════════════════════════════════════════════════
+       EN-TÊTE — barre de navigation + section d'accueil
+    ══════════════════════════════════════════════════════════ */
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.85);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+              backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .site-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; min-height: 64px;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-weight: 700; color: var(--ink); text-decoration: none;
+      letter-spacing: -0.01em; flex-shrink: 0;
+    }
+    .brand:hover { color: var(--ink); }
+    .brand-mark {
+      width: 34px; height: 34px; border-radius: 9px;
+      background: var(--ink); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 800; letter-spacing: 0.02em;
+    }
+    .nav-links { display: flex; gap: 2px; }
+    .nav-links a {
+      position: relative; padding: 8px 12px; border-radius: 8px;
+      font-size: 0.88rem; font-weight: 500; color: var(--muted);
+      text-decoration: none; white-space: nowrap;
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+    .nav-links a:hover { color: var(--ink); background: #f1f2f7; }
+    .nav-links a.active { color: var(--primary); }
+    .nav-links a.active::after {
+      content: ""; position: absolute; left: 12px; right: 12px; bottom: 2px;
+      height: 2px; border-radius: 2px; background: var(--primary);
+    }
+
+    .hero {
+      padding: 5.5rem 0 4.5rem;
+      background-color: #fff;
+      /* Trame de points discrète */
+      background-image: radial-gradient(#dfe2ee 1px, transparent 1px);
+      background-size: 22px 22px;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 5px 12px; border-radius: 100px;
+      background: #fff; border: 1px solid var(--line);
+      font-size: 0.8rem; font-weight: 600; color: var(--muted);
+    }
+    .hero-eyebrow::before {
+      content: ""; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .hero h1 {
+      font-size: clamp(2.6rem, 7vw, 4.5rem); font-weight: 800;
+      letter-spacing: -0.04em; line-height: 1.05;
+      margin: 1.25rem 0 1rem; color: var(--ink);
+    }
+    /* Seul dégradé du site : la signature du nom */
+    .hero h1 .accent {
+      background: linear-gradient(120deg, var(--primary), var(--accent));
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+    }
+    .hero-lead {
+      max-width: 560px; font-size: 1.1rem; line-height: 1.6;
+      color: var(--muted); margin-bottom: 2rem;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn-solid, .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 22px; border-radius: 10px;
+      font-size: 0.92rem; font-weight: 600; text-decoration: none;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+    .btn-solid { background: var(--ink); color: #fff; border: 1px solid var(--ink); }
+    .btn-solid:hover { background: #000; color: #fff; transform: translateY(-1px); }
+    .btn-ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+    .btn-ghost:hover { border-color: #c9cddc; color: var(--ink); transform: translateY(-1px); }
+
+    .site-footer {
+      background: var(--ink); color: rgba(255,255,255,0.65);
+      padding: 1.75rem 0; font-size: 0.85rem;
+    }
+    .site-footer p { margin: 0; }
+
+    /* ══════════════════════════════════════════════════════════
+       CONTACT
+    ══════════════════════════════════════════════════════════ */
+    .contact-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px; max-width: 720px; margin: 1.25rem 0 1.5rem;
+    }
+    .contact-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px; border-radius: 12px;
+      background: #fff; border: 1px solid var(--line);
+      color: var(--ink); font-weight: 600; text-decoration: none;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .contact-item:hover {
+      color: var(--ink); border-color: #d5d9f3; transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(29,33,48,0.08);
+    }
+    .contact-item small {
+      display: block; font-size: 0.75rem; font-weight: 500; color: var(--muted);
+    }
+    .contact-icon {
+      width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--primary-soft);
+    }
+
+    @media (max-width: 767px) {
+      .site-nav { flex-direction: column; align-items: stretch; gap: 0; padding-top: 10px; }
+      .nav-links {
+        overflow-x: auto; margin: 0 -12px; padding: 4px 4px 6px;
+        scrollbar-width: none;
+      }
+      .nav-links::-webkit-scrollbar { display: none; }
+      html { scroll-padding-top: 110px; }
+      .hero { padding: 3.5rem 0 3rem; }
     }
 
     /* ══════════════════════════════════════════════════════════
        CARDS UNIFIÉES — Parcours & Projets
     ══════════════════════════════════════════════════════════ */
     .card {
-      border: none !important;
-      border-top: 3px solid transparent !important;
-      border-image: linear-gradient(135deg, #667eea, #d48236) 1 !important;
-      border-radius: 10px !important;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
-      transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+      border: 1px solid var(--line) !important;
+      border-radius: 12px !important;
+      box-shadow: 0 1px 2px rgba(29,33,48,0.04) !important;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
       background: #fff !important;
     }
     .card:hover {
-      transform: translateY(-5px) !important;
-      box-shadow: 0 8px 24px rgba(102,126,234,0.18) !important;
+      transform: translateY(-3px) !important;
+      border-color: #d5d9f3 !important;
+      box-shadow: 0 12px 28px rgba(29,33,48,0.08) !important;
     }
-    .card-title { font-weight: 700; color: #222; font-size: 0.97rem; }
-    .card-text  { font-size: 0.85rem; color: #555; }
+    .card-title { font-weight: 700; color: var(--ink); font-size: 0.97rem; }
+    .card-text  { font-size: 0.85rem; color: var(--muted); }
 
     /* ══════════════════════════════════════════════════════════
        COMPÉTENCES — carrousel infini
     ══════════════════════════════════════════════════════════ */
-    .competences-scroll {
-      width: 100%; overflow: hidden;
-      background-color: #f8f9fa;
-      border-radius: 8px; padding: 15px 0;
+    .skills-marquee {
+      display: grid; gap: 12px;
+      width: 100%; overflow: hidden; padding: 6px 0;
+      /* Fondu sur les bords gauche et droit */
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+              mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
     }
-    .competences-container {
-      display: flex; gap: 15px; padding: 0 15px;
-      animation: scrollLeft 30s linear infinite;
-      width: fit-content;
+    .skills-track {
+      display: flex; width: max-content;
+      animation: skillsScroll var(--duration, 30s) linear infinite;
     }
-    .competences-container:hover { animation-play-state: paused; }
-    .competence-card {
-      min-width: 120px; height: 120px;
-      background: linear-gradient(135deg, #667eea 0%, #d48236 100%);
-      color: white; border-radius: 8px;
+    .skills-track.reverse { animation-direction: reverse; }
+    .skills-marquee:hover .skills-track { animation-play-state: paused; }
+
+    .skill-chip {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-right: 12px; padding: 7px 18px 7px 7px;
+      background: #fff; border: 1px solid #e8e9f3; border-radius: 100px;
+      box-shadow: 0 2px 8px rgba(102,126,234,0.10);
+      font-size: 0.88rem; font-weight: 600; color: #333;
+      white-space: nowrap;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .skill-chip:hover {
+      border-color: var(--primary); transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(102,126,234,0.22);
+    }
+    .skill-icon {
+      width: 32px; height: 32px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-weight: bold; text-align: center; padding: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      flex-shrink: 0; transition: transform 0.3s ease;
+      font-size: 1rem;
+      background: var(--primary-soft);
     }
-    .competence-card:hover { transform: scale(1.05); }
-    @keyframes scrollLeft {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(calc(-50% - 7.5px)); }
+    /* -50 % = une copie complète de la liste, d'où une boucle sans à-coup */
+    @keyframes skillsScroll {
+      to { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .skills-track { animation: none; flex-wrap: wrap; justify-content: center; width: auto; }
     }
 
     /* ══════════════════════════════════════════════════════════
@@ -81,12 +240,12 @@
       position: relative; list-style: none;
       max-width: 860px; margin: 1.5rem auto 0; padding: 0;
     }
-    /* Ligne centrale en dégradé */
+    /* Ligne centrale */
     .timeline::before {
       content: ""; position: absolute;
-      top: 0; bottom: 0; left: 50%; width: 3px;
+      top: 0; bottom: 0; left: 50%; width: 2px;
       transform: translateX(-50%);
-      background: linear-gradient(180deg, #667eea, #d48236);
+      background: var(--line);
       border-radius: 3px;
     }
     .timeline-item {
@@ -101,24 +260,27 @@
     .timeline-dot {
       position: absolute; top: 14px; right: -22px; z-index: 1;
       width: 44px; height: 44px; border-radius: 50%;
-      background: #fff; border: 3px solid #667eea;
+      background: #fff; border: 2px solid var(--line);
       display: flex; align-items: center; justify-content: center;
       font-size: 1.1rem;
-      box-shadow: 0 2px 8px rgba(102,126,234,0.25);
+      box-shadow: 0 2px 6px rgba(29,33,48,0.06);
     }
     .timeline-item:nth-child(even) .timeline-dot { right: auto; left: -22px; }
     .timeline-item.is-current .timeline-dot {
-      background: linear-gradient(135deg, #667eea, #d48236);
-      border-color: #fff;
-      box-shadow: 0 0 0 5px rgba(212,130,54,0.25);
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 5px rgba(212,130,54,0.15);
     }
     .timeline-card { text-align: right; }
     .timeline-item:nth-child(even) .timeline-card { text-align: left; }
     .timeline-date {
       display: inline-block; font-size: 0.72rem; font-weight: 700;
-      background: linear-gradient(135deg, #667eea, #d48236);
-      color: #fff; padding: 2px 10px; border-radius: 100px;
+      background: var(--primary-soft);
+      color: var(--primary); padding: 2px 10px; border-radius: 100px;
       margin-bottom: 0.5rem;
+    }
+    .timeline-item.is-current .timeline-date {
+      background: var(--accent-soft); color: var(--accent-ink);
     }
 
     @media (max-width: 767px) {
@@ -143,7 +305,7 @@
     .company-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
     .company-logo {
       width: 72px; height: 72px; border-radius: 50%;
-      background: linear-gradient(135deg, #667eea 0%, #d48236 100%);
+      background: var(--ink);
       color: #fff; font-weight: 700; font-size: 1.3rem;
       display: flex; align-items: center; justify-content: center;
       margin-bottom: 0.9rem; flex-shrink: 0;
@@ -163,7 +325,7 @@
     }
     .mission-list li::before {
       content: "✓"; position: absolute; left: 0; top: 4px;
-      color: #667eea; font-weight: 700;
+      color: var(--primary); font-weight: 700;
     }
 
     /* ══════════════════════════════════════════════════════════
@@ -175,8 +337,8 @@
 
     .month-badge {
       display: inline-block; font-size: 0.7rem; font-weight: 700;
-      background: linear-gradient(135deg, #667eea, #d48236);
-      color: #fff; padding: 2px 9px; border-radius: 100px;
+      background: var(--accent-soft);
+      color: var(--accent-ink); padding: 3px 10px; border-radius: 100px;
       margin-left: 6px; vertical-align: middle;
     }
 
@@ -186,28 +348,28 @@
     }
     .filter-btn {
       padding: 5px 14px;
-      border: 2px solid #667eea; background: transparent; color: #667eea;
+      border: 1px solid var(--line); background: #fff; color: var(--muted);
       border-radius: 100px; font-size: 0.82rem; font-weight: 600;
       cursor: pointer; transition: all 0.2s ease;
     }
-    .filter-btn:hover, .filter-btn.active {
-      background: linear-gradient(135deg, #667eea, #d48236);
-      border-color: transparent; color: #fff;
+    .filter-btn:hover { border-color: #c9cddc; color: var(--ink); }
+    .filter-btn.active {
+      background: var(--ink); border-color: var(--ink); color: #fff;
     }
     .filter-separator { width: 1px; height: 24px; background: #ddd; margin: 0 4px; }
     .filter-select {
       padding: 5px 32px 5px 14px;
-      border: 2px solid #667eea; border-radius: 100px;
-      font-size: 0.82rem; font-weight: 600; color: #667eea;
+      border: 1px solid var(--line); border-radius: 100px;
+      font-size: 0.82rem; font-weight: 600; color: var(--muted);
       background-color: #fff;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23646a7d' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
       background-repeat: no-repeat; background-position: right 12px center;
       appearance: none; -webkit-appearance: none;
       cursor: pointer; transition: all 0.2s ease; outline: none;
     }
     .filter-select:hover, .filter-select:focus {
-      border-color: #d48236; color: #d48236;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23d48236' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+      border-color: #c9cddc; color: var(--ink);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231d2130' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
     }
 
     /* ══════════════════════════════════════════════════════════
@@ -218,18 +380,17 @@
     }
     .carousel-arrow {
       flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
-      border: 2px solid #667eea; background: #fff; color: #667eea;
+      border: 1px solid var(--line); background: #fff; color: var(--ink);
       font-size: 1.1rem; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: all 0.2s ease; user-select: none;
     }
     .carousel-arrow:hover {
-      background: linear-gradient(135deg, #667eea, #d48236);
-      border-color: transparent; color: #fff;
+      background: var(--ink); border-color: var(--ink); color: #fff;
     }
     .carousel-arrow:disabled {
-      opacity: 0.28; cursor: default;
-      background: #fff; color: #667eea; border-color: #667eea;
+      opacity: 0.35; cursor: default;
+      background: #fff; color: var(--ink); border-color: var(--line);
     }
     .veille-track-outer { flex: 1; overflow: hidden; }
     .veille-track {
@@ -244,26 +405,26 @@
        VEILLE — CARTE (mode résumé uniquement)
     ══════════════════════════════════════════════════════════ */
     .veille-card {
-      background: #fff; border-radius: 10px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      background: #fff; border-radius: 12px;
+      border: 1px solid var(--line);
+      box-shadow: 0 1px 2px rgba(29,33,48,0.04);
       padding: 1.25rem;
       display: flex; flex-direction: column;
       flex-shrink: 0; width: 280px;
-      border-top: 3px solid transparent;
-      border-image: linear-gradient(135deg, #667eea, #d48236) 1;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
       cursor: pointer;
     }
     .veille-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 24px rgba(102,126,234,0.18);
+      transform: translateY(-3px);
+      border-color: #d5d9f3;
+      box-shadow: 0 12px 28px rgba(29,33,48,0.08);
     }
 
     .veille-meta {
       display: flex; justify-content: space-between; align-items: center;
       font-size: 0.75rem; color: #999; margin-bottom: 0.5rem;
     }
-    .veille-source { font-weight: 600; color: #667eea; }
+    .veille-source { font-weight: 600; color: var(--primary); }
 
     .veille-card h4 {
       font-size: 0.95rem; font-weight: 700;
@@ -287,7 +448,7 @@
       display: flex; align-items: center; gap: 4px;
       margin-bottom: 0.6rem;
     }
-    .veille-hint::before { content: "→"; color: #667eea; }
+    .veille-hint::before { content: "→"; color: var(--primary); }
 
     /* Tags */
     .veille-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
@@ -309,7 +470,8 @@
     ══════════════════════════════════════════════════════════ */
     .modal-overlay {
       position: fixed; inset: 0; z-index: 9999;
-      background: rgba(0,0,0,0.55);
+      background: rgba(20,23,34,0.55);
+      -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
       display: flex; align-items: center; justify-content: center;
       padding: 20px;
       opacity: 0; pointer-events: none;
@@ -331,17 +493,6 @@
       transform: translateY(0);
     }
 
-    /* Barre de couleur en haut de la modale */
-    .modal-box::before {
-      content: "";
-      display: block;
-      height: 4px;
-      background: linear-gradient(135deg, #667eea, #d48236);
-      border-radius: 4px 4px 0 0;
-      margin: -2rem -2rem 1.5rem -2rem;
-      border-radius: 14px 14px 0 0;
-    }
-
     .modal-close {
       position: absolute; top: 1rem; right: 1rem;
       width: 32px; height: 32px; border-radius: 50%;
@@ -357,7 +508,7 @@
       flex-wrap: wrap; margin-bottom: 0.75rem;
       font-size: 0.8rem; color: #999;
     }
-    .modal-source { font-weight: 700; color: #667eea; font-size: 0.85rem; }
+    .modal-source { font-weight: 700; color: var(--primary); font-size: 0.85rem; }
     .modal-date   { font-size: 0.8rem; }
 
     .modal-box h3 {
@@ -375,12 +526,12 @@
     .modal-link {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 8px 18px;
-      background: linear-gradient(135deg, #667eea, #d48236);
+      background: var(--ink);
       color: #fff; font-size: 0.83rem; font-weight: 600;
-      border-radius: 100px; text-decoration: none;
-      transition: opacity 0.2s;
+      border-radius: 10px; text-decoration: none;
+      transition: background 0.2s;
     }
-    .modal-link:hover { opacity: 0.88; color: #fff; }
+    .modal-link:hover { background: #000; color: #fff; }
     .modal-link::before { content: "↗"; }
 
     .modal-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1.25rem; }
@@ -389,12 +540,12 @@
        PROJETS — cartes cliquables & contenu de la modale
     ══════════════════════════════════════════════════════════ */
     .projet-card { cursor: pointer; }
-    .projet-card:focus-visible { outline: 3px solid #667eea; outline-offset: 3px; }
+    .projet-card:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
     .projet-card .veille-hint { margin: 0.75rem 0 0; }
     .projet-detail { display: none; }
 
     .modal-box h4 {
-      font-size: 0.9rem; font-weight: 700; color: #667eea;
+      font-size: 0.9rem; font-weight: 700; color: var(--primary);
       margin: 1.25rem 0 0.5rem;
     }
     .modal-box .projet-body p { font-size: 0.88rem; color: #444; line-height: 1.7; }
@@ -438,17 +589,31 @@
     </div>
   </div>
 
-  <header class="text-white text-center py-4">
-    <h1>Tom Omnès</h1>
-    <nav class="mt-3">
-      <a href="#propos"     class="btn btn-outline-light mx-2">À propos</a>
-      <a href="#parcours"   class="btn btn-outline-light mx-2">Parcours</a>
-      <a href="#alternance" class="btn btn-outline-light mx-2">Alternance</a>
-      <a href="#projets"    class="btn btn-outline-light mx-2">Projets</a>
-      <a href="#veille"     class="btn btn-outline-light mx-2">Veille</a>
-      <a href="#contact"    class="btn btn-outline-light mx-2">Contact</a>
+  <header class="site-header">
+    <nav class="container site-nav">
+      <a href="#top" class="brand"><span class="brand-mark">TO</span>Tom Omnès</a>
+      <div class="nav-links">
+        <a href="#propos">À propos</a>
+        <a href="#parcours">Parcours</a>
+        <a href="#alternance">Alternance</a>
+        <a href="#projets">Projets</a>
+        <a href="#veille">Veille</a>
+        <a href="#contact">Contact</a>
+      </div>
     </nav>
   </header>
+
+  <section class="hero" id="top">
+    <div class="container">
+      <span class="hero-eyebrow">BTS SIO · option SISR</span>
+      <h1>Tom <span class="accent">Omnès</span></h1>
+      <p class="hero-lead">Étudiant en BTS SIO option Solutions d'Infrastructures, Systèmes et Réseaux, en apprentissage chez iSi Solutions à Annecy.</p>
+      <div class="hero-actions">
+        <a href="#projets" class="btn-solid">Voir mes projets →</a>
+        <a href="documents/E5-Tableau-de-synthese.pdf" target="_blank" rel="noopener" class="btn-ghost">📄 Tableau de synthèse E5</a>
+      </div>
+    </div>
+  </section>
 
   <main class="container my-5">
 
@@ -456,32 +621,23 @@
     <div id="propos" class="row mb-5 align-items-start">
       <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
         <img id="PhT" src="images/PhotoTom.jpg" alt="Photo de profil" class="img-fluid rounded">
-        <a href="documents/E5-Tableau-de-synthese.pdf" target="_blank" rel="noopener" class="btn btn-outline-primary mt-3">
-          📄 Voir le tableau de synthèse E5
-        </a>
       </div>
       <div class="col-md-6 d-flex flex-column align-items-center justify-content-start">
         <h2 class="text-center">À propos de moi</h2>
         <p class="text-center">Étudiant en BTS SIO SISR, en apprentissage chez iSi Solutions.</p>
         <h3 class="text-center mt-4">Mes Compétences</h3>
-        <div class="competences-scroll mt-3">
-          <div class="competences-container">
-            <div class="competence-card">Windows</div>
-            <div class="competence-card">Réseaux</div>
-            <div class="competence-card">VPN</div>
-            <div class="competence-card">RDS</div>
-            <div class="competence-card">Active Directory</div>
-            <div class="competence-card">HTML/CSS</div>
-            <div class="competence-card">JavaScript</div>
-            <div class="competence-card">Linux</div>
-            <div class="competence-card">Windows</div>
-            <div class="competence-card">Réseaux</div>
-            <div class="competence-card">VPN</div>
-            <div class="competence-card">RDS</div>
-            <div class="competence-card">Active Directory</div>
-            <div class="competence-card">HTML/CSS</div>
-            <div class="competence-card">JavaScript</div>
-            <div class="competence-card">Linux</div>
+        <div class="skills-marquee mt-3">
+          <div class="skills-track">
+            <span class="skill-chip"><span class="skill-icon">🪟</span>Windows</span>
+            <span class="skill-chip"><span class="skill-icon">🐧</span>Linux</span>
+            <span class="skill-chip"><span class="skill-icon">👥</span>Active Directory</span>
+            <span class="skill-chip"><span class="skill-icon">🖥️</span>RDS</span>
+          </div>
+          <div class="skills-track reverse">
+            <span class="skill-chip"><span class="skill-icon">🌐</span>Réseaux</span>
+            <span class="skill-chip"><span class="skill-icon">🔒</span>VPN</span>
+            <span class="skill-chip"><span class="skill-icon">🎨</span>HTML/CSS</span>
+            <span class="skill-chip"><span class="skill-icon">⚡</span>JavaScript</span>
           </div>
         </div>
       </div>
@@ -906,8 +1062,16 @@
     <!-- ── CONTACT ───────────────────────────────────────────── -->
     <div id="contact" class="mb-5">
       <h2>Contact</h2>
-      <p>Email : <a href="mailto:tom.omnes@saintmichelannecy.fr">tom.omnes@saintmichelannecy.fr</a></p>
-      <p>Téléphone : 06 12 34 56 78</p>
+      <div class="contact-grid">
+        <a class="contact-item" href="mailto:tom.omnes@saintmichelannecy.fr">
+          <span class="contact-icon">✉️</span>
+          <span><small>Email</small>tom.omnes@saintmichelannecy.fr</span>
+        </a>
+        <a class="contact-item" href="tel:+33612345678">
+          <span class="contact-icon">📞</span>
+          <span><small>Téléphone</small>06 12 34 56 78</span>
+        </a>
+      </div>
       <div class="form_group">
         <label for="email">Email</label>
         <input type="email" name="email" id="email" placeholder="Votre email">
@@ -916,13 +1080,55 @@
 
   </main>
 
-  <footer class="text-white text-center py-3">
-    <p>&copy; 2025 Tom - Portfolio BTS SIO SISR</p>
+  <footer class="site-footer">
+    <div class="container d-flex flex-wrap justify-content-between gap-2">
+      <p>&copy; 2025 Tom Omnès</p>
+      <p>Portfolio BTS SIO SISR</p>
+    </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
   (function () {
+
+    /* ── NAVIGATION : section en cours ──────────────────────── */
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const sections = Array.from(navLinks, a => document.querySelector(a.getAttribute('href')));
+
+    // Section active = la dernière dont le haut a dépassé 40 % de l'écran.
+    // En bas de page, c'est la dernière (Contact est trop courte pour y arriver).
+    function updateActiveLink() {
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      let current = -1;
+      sections.forEach((section, i) => {
+        if (section.getBoundingClientRect().top <= window.innerHeight * 0.4) current = i;
+      });
+      if (atBottom) current = sections.length - 1;
+      navLinks.forEach((a, i) => a.classList.toggle('active', i === current));
+    }
+    window.addEventListener('scroll', updateActiveLink, { passive: true });
+    updateActiveLink();
+
+    /* ── CARROUSEL COMPÉTENCES ───────────────────────────────── */
+    // Répète la liste jusqu'à remplir la largeur, puis la double :
+    // l'animation à -50 % retombe alors exactement sur le point de départ.
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('.skills-track').forEach(function (track) {
+        const original = Array.from(track.children);
+        // 660 px = largeur max de la colonne : pas de trou si la fenêtre est agrandie ensuite
+        const minWidth = Math.max(track.parentElement.offsetWidth, 660);
+        while (track.scrollWidth < minWidth) {
+          original.forEach(chip => track.appendChild(chip.cloneNode(true)));
+        }
+        Array.from(track.children).forEach(chip => {
+          const clone = chip.cloneNode(true);
+          clone.setAttribute('aria-hidden', 'true');
+          track.appendChild(clone);
+        });
+        // Vitesse constante (~35 px/s) quelle que soit la longueur de la liste
+        track.style.setProperty('--duration', (track.scrollWidth / 2 / 35) + 's');
+      });
+    }
 
     /* ── BLOCAGE DU DÉFILEMENT ───────────────────────────────── */
     // Masquer la barre de défilement élargit la page : on compense sa
