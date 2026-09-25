@@ -145,10 +145,8 @@
     /* ══════════════════════════════════════════════════════════
        CONTACT
     ══════════════════════════════════════════════════════════ */
-    .contact-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 12px; max-width: 720px; margin: 1.25rem 0 1.5rem;
-    }
+    .contact-intro { color: var(--muted); font-size: 0.92rem; margin-bottom: 1.5rem; }
+    .contact-grid { display: grid; gap: 12px; }
     .contact-item {
       display: flex; align-items: center; gap: 14px;
       padding: 14px 18px; border-radius: 12px;
@@ -163,6 +161,43 @@
     .contact-item small {
       display: block; font-size: 0.75rem; font-weight: 500; color: var(--muted);
     }
+    .contact-form {
+      background: #fff; border: 1px solid var(--line); border-radius: 16px;
+      padding: 1.75rem; box-shadow: 0 1px 2px rgba(29,33,48,0.04);
+    }
+    .field label {
+      display: block; margin-bottom: 6px;
+      font-size: 0.85rem; font-weight: 600; color: var(--ink);
+    }
+    .field .optional { font-weight: 400; color: var(--muted); }
+    .field input, .field textarea {
+      width: 100%; padding: 11px 14px;
+      font: inherit; font-size: 0.95rem; color: var(--ink);
+      background: #fbfbfd; border: 1px solid var(--line); border-radius: 10px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .field textarea { resize: vertical; min-height: 140px; }
+    .field input::placeholder, .field textarea::placeholder { color: #a3a8b8; }
+    .field input:focus, .field textarea:focus {
+      background: #fff; border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-soft);
+    }
+    .field-error { display: none; margin-top: 6px; font-size: 0.78rem; color: #c0392b; }
+    .field.is-invalid input, .field.is-invalid textarea {
+      border-color: #d9534f; box-shadow: 0 0 0 4px #fdecea;
+    }
+    .field.is-invalid .field-error { display: block; }
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+    .form-footer { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+    button.btn-solid { cursor: pointer; font-family: inherit; }
+    button.btn-solid:disabled { opacity: 0.6; cursor: wait; transform: none; }
+    .form-status { margin: 0; font-size: 0.88rem; color: var(--muted); }
+    .form-status.is-success { color: #2b8a3e; font-weight: 600; }
+    .form-status.is-error   { color: #c0392b; font-weight: 600; }
+    .anim .form-status.is-success { animation: heroIn 0.6s cubic-bezier(.22,1,.36,1) both; }
+
     .contact-icon {
       width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
@@ -1165,6 +1200,9 @@
     <!-- ── CONTACT ───────────────────────────────────────────── -->
     <div id="contact" class="mb-5">
       <h2>Contact</h2>
+      <p class="contact-intro">Une question, une proposition ou simplement envie d'échanger ? Écrivez-moi.</p>
+      <div class="row g-4">
+        <div class="col-lg-5">
       <div class="contact-grid">
         <a class="contact-item" href="mailto:tom.omnes@saintmichelannecy.fr">
           <span class="contact-icon">✉️</span>
@@ -1175,9 +1213,46 @@
           <span><small>Téléphone</small>06 12 34 56 78</span>
         </a>
       </div>
-      <div class="form_group">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" placeholder="Votre email">
+        </div>
+
+        <div class="col-lg-7">
+          <!--
+            Sans data-endpoint : ouvre la messagerie du visiteur avec le message prérempli.
+            Pour recevoir les messages directement : créer un formulaire sur formspree.io
+            et coller son URL dans data-endpoint (ex. https://formspree.io/f/xxxxxxx).
+          -->
+          <form class="contact-form" id="contactForm" novalidate
+                data-endpoint=""
+                data-email="tom.omnes@saintmichelannecy.fr">
+            <div class="row g-3">
+              <div class="col-sm-6 field">
+                <label for="cf-name">Nom</label>
+                <input id="cf-name" name="name" type="text" autocomplete="name" placeholder="Votre nom" required>
+                <span class="field-error">Indiquez votre nom.</span>
+              </div>
+              <div class="col-sm-6 field">
+                <label for="cf-email">Email</label>
+                <input id="cf-email" name="email" type="email" autocomplete="email" placeholder="vous@exemple.fr" required>
+                <span class="field-error">Indiquez une adresse email valide.</span>
+              </div>
+              <div class="col-12 field">
+                <label for="cf-subject">Sujet <span class="optional">(facultatif)</span></label>
+                <input id="cf-subject" name="subject" type="text" placeholder="Ex. : proposition d'alternance">
+              </div>
+              <div class="col-12 field">
+                <label for="cf-message">Message</label>
+                <textarea id="cf-message" name="message" rows="5" minlength="10" placeholder="Votre message…" required></textarea>
+                <span class="field-error">Votre message doit contenir au moins 10 caractères.</span>
+              </div>
+              <!-- Piège anti-spam : invisible pour les humains -->
+              <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <div class="col-12 form-footer">
+                <button type="submit" class="btn-solid">Envoyer le message <span class="btn-arrow">→</span></button>
+                <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
 
@@ -1223,7 +1298,7 @@
       const groups = [
         'main h2', '.alternance-intro', '.veille-intro', '#propos > div',
         '#alternance .row > div', '#projets .row > div', '.timeline-item',
-        '.veille-filters', '.veille-carousel-wrapper', '.contact-grid', '#contact .form_group'
+        '.veille-filters', '.veille-carousel-wrapper', '.contact-intro', '#contact .row > div'
       ];
       const revealer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
@@ -1273,6 +1348,67 @@
       el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
       el.style.setProperty('--my', (e.clientY - r.top) + 'px');
     }, { passive: true });
+
+    /* ── FORMULAIRE DE CONTACT ───────────────────────────────── */
+    const form     = document.getElementById('contactForm');
+    const status   = document.getElementById('formStatus');
+    const submit   = form.querySelector('button[type="submit"]');
+    const required = form.querySelectorAll('[required]');
+
+    function setStatus(text, type) {
+      status.textContent = text;
+      status.className = 'form-status' + (type ? ' is-' + type : '');
+    }
+
+    function checkField(input) {
+      const ok = input.value.trim() !== '' && input.checkValidity();
+      input.closest('.field').classList.toggle('is-invalid', !ok);
+      return ok;
+    }
+
+    // Une fois signalé en erreur, le champ se corrige pendant la saisie
+    required.forEach(function (input) {
+      input.addEventListener('input', function () {
+        if (input.closest('.field').classList.contains('is-invalid')) checkField(input);
+      });
+    });
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const invalid = Array.from(required).filter(input => !checkField(input));
+      if (invalid.length) {
+        invalid[0].focus();
+        setStatus('Merci de compléter les champs en rouge.', 'error');
+        return;
+      }
+
+      const data     = new FormData(form);
+      const endpoint = form.dataset.endpoint;
+
+      // Pas de service d'envoi configuré : on passe par la messagerie du visiteur
+      if (!endpoint) {
+        const subject = data.get('subject') || 'Contact depuis le portfolio';
+        const body = 'Nom : ' + data.get('name') + '\nEmail : ' + data.get('email') + '\n\n' + data.get('message');
+        window.location.href = 'mailto:' + form.dataset.email
+          + '?subject=' + encodeURIComponent(subject)
+          + '&body=' + encodeURIComponent(body);
+        setStatus('Votre messagerie s\'ouvre avec le message prérempli, il ne reste qu\'à l\'envoyer.', 'success');
+        return;
+      }
+
+      submit.disabled = true;
+      setStatus('Envoi en cours…');
+      try {
+        const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error(res.status);
+        form.reset();
+        setStatus('✓ Merci ! Votre message a bien été envoyé.', 'success');
+      } catch (err) {
+        setStatus('L\'envoi a échoué. Vous pouvez m\'écrire directement à ' + form.dataset.email + '.', 'error');
+      } finally {
+        submit.disabled = false;
+      }
+    });
 
     /* ── CARROUSEL COMPÉTENCES ───────────────────────────────── */
     // Répète la liste jusqu'à remplir la largeur, puis la double :
