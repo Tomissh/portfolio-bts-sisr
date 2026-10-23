@@ -4,7 +4,7 @@ Portfolio personnel (BTS SIO option SISR) en **site statique d'une seule page**,
 
 - **Repo** : https://github.com/Tomissh/portfolio-bts-sisr
 - **En ligne** : https://tomissh.github.io/portfolio-bts-sisr/ (GitHub Pages, branche `main`)
-- **Dossier local** : `C:\Users\tomom\Proton Drive\tom.omnes\My files\CN` (synchronisé par Proton Drive)
+- **Dossier local** : `C:\dev\portefolio` (clone de travail depuis le 2026-10-23). L'ancien clone `C:\Users\tomom\Proton Drive\tom.omnes\My files\CN` est identique au commit `64834bc` et n'est plus utilisé.
 
 ## Contenu du dépôt
 
@@ -17,7 +17,7 @@ Portfolio personnel (BTS SIO option SISR) en **site statique d'une seule page**,
 | `documents/E5-Tableau-de-synthese.pdf` | Tableau de synthèse de l'épreuve E5 (section Alternance) |
 | `send_veille_websearch.py` | Génère le rapport de veille mensuel (Claude + web search) et l'envoie par email |
 | `.github/workflows/veille.yml` | Lance le script le 1er de chaque mois à 7h UTC (+ déclenchement manuel) |
-| `.claude/launch.json` | Configs de preview : `portfolio-dev` (`python -m http.server 5500`) et `caisse-noire-dev` |
+| `.claude/launch.json` | Config de preview Claude Code : `portfolio-dev` (`python -m http.server 5500`). Ignoré par git (`.gitignore`), à recréer sur un nouveau clone. |
 
 ## Lancer en local
 
@@ -64,7 +64,7 @@ Pour un nouveau mois, ajouter aussi l'option dans `<select id="filterMois">` : `
 - Pour recevoir les messages directement : créer un formulaire sur formspree.io et mettre son URL dans `data-endpoint`.
 - Champ `_gotcha` caché = piège anti-spam.
 
-## État (au 2026-10-22, dernier commit `4cececb` « Add contact form » du 2026-09-25)
+## État (au 2026-10-23, dernier commit `64834bc` « Update README with project documentation »)
 
 Fait : refonte du header et du style, carrousel de compétences, animations, bouton CV, popups de projets, timeline verticale, section Alternance + PDF E5, formulaire de contact.
 
@@ -73,7 +73,8 @@ Fait : refonte du header et du style, carrousel de compétences, animations, bou
 - [ ] Footer `© 2025`, à mettre à jour.
 - [ ] Les cartes de veille s'arrêtent à **avril 2026** : intégrer les rapports reçus depuis (et ajouter les options de mois).
 - [ ] Choisir entre le mode `mailto:` et Formspree pour le formulaire de contact.
-- [ ] Vérifier que le workflow `veille.yml` tourne toujours (onglet Actions) et que la clé API est valide.
+- [ ] **Workflow `veille.yml` désactivé par GitHub** (`disabled_inactivity`, après 60 jours sans commit) : dernier rapport le 2026-06-01, aucun depuis juillet. Le réactiver (onglet Actions → « Enable workflow », ou `gh workflow enable veille.yml`), puis le lancer à la main pour vérifier que la clé API est toujours valide. Les secrets datent du 2026-03-18.
+- [ ] Le modèle `claude-haiku-4-5-20251001` du script est ancien : envisager de passer à un modèle plus récent si l'appel échoue.
 
 ## Conventions
 
